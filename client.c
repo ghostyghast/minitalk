@@ -6,7 +6,7 @@
 /*   By: amaligno <amaligno@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:57:58 by amaligno          #+#    #+#             */
-/*   Updated: 2023/05/31 14:30:02 by amaligno         ###   ########.fr       */
+/*   Updated: 2023/05/31 15:22:28 by amaligno         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	sig_recv(int sig)
 {
 	static int	received;
 
-	if (sig == SIGUSR1)
+	if (sig == ZERO)
 		++received;
 	else
 	{
@@ -37,16 +37,16 @@ void	send_string(int pid, char *str)
 		while (i--)
 		{
 			if (c >> i & 1)
-				kill(pid, SIGUSR2);
+				kill(pid, ONE);
 			else
-				kill(pid, SIGUSR1);
+				kill(pid, ZERO);
 			usleep(100);
 		}
 	}
 	i = 8;
 	while (i--)
 	{
-		kill(pid, SIGUSR1);
+		kill(pid, ZERO);
 		usleep(100);
 	}
 }
@@ -55,8 +55,8 @@ int	main(int c, char **str)
 {
 	if (c == 3)
 	{
-		signal(SIGUSR1, sig_recv);
-		signal(SIGUSR2, sig_recv);
+		signal(ZERO, sig_recv);
+		signal(ONE, sig_recv);
 		send_string(ft_atoi(str[1]), str[2]);
 		while (1)
 			pause();
